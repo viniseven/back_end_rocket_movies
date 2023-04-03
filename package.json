@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/server.js"
+    "start": "nodemon src/server.js",
+    "migrate": "knex migrate:latest"
   },
   "keywords": [],
   "author": "Marcus Vinicius",
@@ -15,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
+    "knex": "^2.4.2",
     "nodemon": "^2.0.22",
     "path": "^0.12.7",
     "save": "^2.9.0",

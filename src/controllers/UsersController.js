@@ -60,8 +60,6 @@ class UsersController {
         [user.name, user.email, user.password, id])
 
         return response.status(200).json({ message: 'Dados atualizados com sucesso'});
-
-
     }
 }
 
