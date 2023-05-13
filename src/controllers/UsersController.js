@@ -21,12 +21,12 @@ class UsersController {
     }
     
     async update(request, response){
-        const  { id }  = request.params
         const { name, email, password, oldPassword } = request.body
+        const user_id = request.user.id;
         
         const database = await sqliteConnection();
 
-        const user = await database.get('SELECT * FROM users WHERE id = (?)', [id])
+        const user = await database.get('SELECT * FROM users WHERE id = (?)', [user_id])
 
         if(!user){
             throw new AppError('Usuário não existe')
@@ -51,13 +51,18 @@ class UsersController {
             if(!checkOldPassword){
                 throw new AppError('A senha antiga não confere')
             }
-            
-          user.password = await hash(password, 8)
 
+            const checkEqualPassword = await compare(password, user.password)
+
+            if(checkEqualPassword){
+                throw new AppError('A nova senha não pode ser igual a senha atual')
+            }
+            
+            user.password = await hash(password, 8)
         }
 
         await database.run(`UPDATE users SET name = ?, email = ?, password = ?, updated_at = DATETIME ('now')  WHERE id = ?`, 
-        [user.name, user.email, user.password, id])
+        [user.name, user.email, user.password, user_id])
 
         return response.status(200).json({ message: 'Dados atualizados com sucesso'});
     }
