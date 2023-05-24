@@ -1,4 +1,3 @@
-require('express-async-errors')
 
 const migrationRun = require('./database/sqlite/migrations')
 const AppError = require('./utils/AppError')
@@ -18,8 +17,6 @@ app.use(express.json())
 app.use(routes)
 app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER))
 
-const port = 3334
-
 
 
 app.use((error, request, response, next) => {
@@ -35,8 +32,7 @@ app.use((error, request, response, next) => {
     })
 })
 
-
-
+const port = 3334;
 app.listen(port, () => {
     console.log(`${port} in use`)
 })

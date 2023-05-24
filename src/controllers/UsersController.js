@@ -4,9 +4,10 @@ const { hash, compare } = require('bcryptjs')
 
 class UsersController {
     async create(request, response){
-        const { name, surname, email, password } = request.body
+        const { name, email, password } = request.body
 
         const database = await sqliteConnection();
+
         const checkUserExists = await database.get('SELECT * FROM users WHERE email = (?)', [email])
 
         if(checkUserExists){
@@ -15,7 +16,7 @@ class UsersController {
 
         const hashedPassowrd = await hash(password, 8)
     
-        await database.run('INSERT INTO users (name, surname, email, password) VALUES (?, ?, ?, ?)',[name, surname, email, hashedPassowrd])
+        await database.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)',[name, email, hashedPassowrd])
 
         return response.status(201).json();
     }
